@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DJ Remove CG Ram Naam</title>
+  <style>
+    body {
+      font-family: 'Noto Sans Oriya', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f3f3f3;
+    }
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h2>📸 ଫଟୋରୁ ପୃଷ୍ଠଭୂମି ହଟାନ୍ତୁ</h2>
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="removeBackground()">ପୃଷ୍ଠଭୂମି ହଟାନ୍ତୁ</button>
+  <div id="result"></div>
+
+  <script>
+    async function removeBackground(){
+      const input = document.getElementById('imageInput');
+      const file = input.files[0];
+      if (!file) return alert("ପ୍ରଥମେ ଫଟୋ ଅପଲୋଡ୍ କରନ୍ତୁ");
+
+      const form = new FormData();
+      form.append("image_file", file);
+      form.append("size", "auto");
+
+      const res = await fetch("/api/remove", {
+        method: "POST",
+        body: form
+      });
+
+      if (res.status !== 200) {
+        alert("Error: " + await res.text());
+        return;
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      document.getElementById("result").innerHTML = `
+        <img src="${url}" style="max-width:90%;margin-top:20px;"><br>
+        <a href="${url}" download="removed.png">
+          <button>HD ଡାଉନ୍ଲୋଡ୍ କରନ୍ତୁ</button>
+        </a>`;
+    }
+  </script>
+</body>
+</html>
