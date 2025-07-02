@@ -52,4 +52,3 @@ app.post('/api/remove', upload.single('image_file'), async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
-
