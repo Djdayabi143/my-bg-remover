@@ -1,48 +1,62 @@
-<!DOCTYPE html>
-<html lang="or">
+ <!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DJ Remove CG Ram Naam</title>
   <style>
     body {
-      font-family: 'Noto Sans Oriya', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: #f3f3f3;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f7f7f7;
     }
-    input, button {
-      padding: 12px;
+    h1 {
+      color: #2c3e50;
+    }
+    input[type="file"], button {
+      padding: 10px;
       margin: 10px;
       font-size: 16px;
     }
-    h2 {
-      color: #2c3e50;
+    #result img {
+      max-width: 100%;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 50px;
+      color: #888;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h2>📸 ଫଟୋରୁ ପୃଷ୍ଠଭୂମି ହଟାନ୍ତୁ</h2>
+
+  <h1>🧹 Remove Image Background</h1>
   <input type="file" id="imageInput" accept="image/*">
-  <button onclick="removeBackground()">ପୃଷ୍ଠଭୂମି ହଟାନ୍ତୁ</button>
+  <br>
+  <button onclick="removeBackground()">Remove Background</button>
+
   <div id="result"></div>
 
+  <div class="footer">Created by DJ Remove CG Ram Naam</div>
+
   <script>
-    async function removeBackground(){
+    async function removeBackground() {
       const input = document.getElementById('imageInput');
       const file = input.files[0];
-      if (!file) return alert("ପ୍ରଥମେ ଫଟୋ ଅପଲୋଡ୍ କରନ୍ତୁ");
+      if (!file) {
+        alert('Please upload an image first.');
+        return;
+      }
 
-      const form = new FormData();
-      form.append("image_file", file);
-      form.append("size", "auto");
+      const formData = new FormData();
+      formData.append("image_file", file);
+      formData.append("size", "auto");
 
       const res = await fetch("/api/remove", {
         method: "POST",
-        body: form
+        body: formData
       });
 
       if (res.status !== 200) {
@@ -54,11 +68,13 @@
       const url = URL.createObjectURL(blob);
 
       document.getElementById("result").innerHTML = `
-        <img src="${url}" style="max-width:90%;margin-top:20px;"><br>
+        <img src="${url}" alt="Removed Background"><br>
         <a href="${url}" download="removed.png">
-          <button>HD ଡାଉନ୍ଲୋଡ୍ କରନ୍ତୁ</button>
-        </a>`;
+          <button>Download Image</button>
+        </a>
+      `;
     }
   </script>
+
 </body>
 </html>
